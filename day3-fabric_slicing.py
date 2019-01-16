@@ -3,13 +3,15 @@
 import argparse
 from itertools import product
 
+from file_ops import return_file_contents
+
 
 class Claims(object):
 
     def __init__(self):
         parser = self.create_parser()
         self.args = parser.parse_args()
-        self.claims = self.load_claims_from_file(self.args.read_file_name)
+        self.claims = return_file_contents(self.args.read_file_name)
         self.coord_tuples = {}
         self.claimed_once = set()
         self.claimed_more_than_once = set()
@@ -18,28 +20,18 @@ class Claims(object):
     @staticmethod
     def create_parser():
         parser = argparse.ArgumentParser(
-            description='Frequency processing options.')
+            description='Fabric claim processing options.')
 
         parser.add_argument('read_file_name', type=str, help="""
-                            Required. Enter the path to the frequency changes
-                            file that you would like analyze.  The file should
-                            be a plaintext file with each frequency change on
-                            its own line.
+                            Required. Enter the path to the input file that you
+                            would like to analyze.  The file should be a
+                            plaintext file with each record on its own line.
                             """)
 
         return parser
 
-    @staticmethod
-    def load_claims_from_file(filename):
-        """Open file specified from user input and read in the frequency changes."""
-        claims = []
-        with open(filename) as claim_file:
-            for claim in claim_file:
-                claims.append(claim)
-        return claims
-
     def process_claims(self):
-        """Handles the mechanics of determining all of the coordinate pairs for each claim."""
+        """Calls methods to parse the claims and determine the coordinate pairs for each claim."""
         claim_dict = self.split_claims()
         coords = self.enumerate_coordinates(claim_dict)
         # self.create_coord_tuples() returns a class variable

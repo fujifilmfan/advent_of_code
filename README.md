@@ -1,6 +1,5 @@
 Advent of Code 2018: Solution Notes
 -----------------------------------
-https://stackoverflow.com/questions/46513358/finding-the-first-duplicate-of-an-array/46513425
 
 [Day 1: Chronal Calibration](#day-1-chronal-calibration)  
 [Day 2: Inventory Management System](#day-2-inventory-management-system)  
@@ -45,7 +44,31 @@ Use the -s or -d flag to see the frequency sum or first duplicate, respectively.
 #### What I learned
 * **collections.Counter()** is used to store elements as dictionary keys with their counts as dictionary values  
 * **zip()** is used to return an iterator of tuples; maps similar index of multiple containers  
+* I don't need to make a list of each letter in the alphabet; things like that can often be found in a module (in this case, string.ascii_lowercase)
 * good review of nested while loops  
+* on that subject, I can replace:  
+```
+    i = 0
+    while i < len(self.box_ids) - 1:
+        j = 1
+        while j < len(self.box_ids):
+            <CODE TO EXECUTE>
+            j += 1
+        i += 1
+```
+with:  
+```
+    for i in range(len(self.box_ids)):
+        for j in range(len(self.box_ids)):
+            <CODE TO EXECUTE>
+```
+or:
+```
+    for i, _ in enumerate(self.box_ids):
+        for j, _ in enumerate(self.box_ids):
+            <CODE TO EXECUTE>
+```
+Thank you, Ryan!  
 
 #### Usage notes
 * `$ day2-inventory_management.py day2-input.txt`  
@@ -57,8 +80,8 @@ common letters: qysdtrkloagnfozuwujmhrbvx
 ### Day 3: No Matter How You Slice It
 
 #### What I learned
-* how to use **split()** and **replace()** (I opted not to use regex, such as `@\W(\d)+,(\d)+:\W(\d)+x(\d)+`, in order to learn a different way to do things)
-* **itertools.product()** is used to make a cartesian product (equivalent to a nested for-loop)
+* how to use **split()** and **replace()** (I opted not to use regex, such as `@\W(\d)+,(\d)+:\W(\d)+x(\d)+`, in order to learn a different way to do things); helpful: [Split Strings with Multiple Delimiters?](https://stackoverflow.com/questions/1059559/split-strings-with-multiple-delimiters/1059601)
+* **itertools.product()** is used to make a cartesian product (equivalent to a nested for-loop); particularly helpful: [Python merging two lists with all possible permutations](https://stackoverflow.com/questions/32438350/python-merging-two-lists-with-all-possible-permutations)
 * using **any** and **all** (in addition to iterables, generators, etc.) from [Check Whether All Items Match a Condition in Python](https://treyhunner.com/2016/11/check-whether-all-items-match-a-condition-in-python/)
 
 #### Usage notes

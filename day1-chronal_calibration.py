@@ -3,13 +3,15 @@
 import argparse
 from itertools import cycle
 
+from file_ops import return_file_contents
+
 
 class Frequency(object):
 
     def __init__(self):
         parser = self.create_parser()
         self.args = parser.parse_args()
-        self.changes = self.load_frequency_changes_from_file(self.args.read_file_name)
+        self.changes = return_file_contents(self.args.read_file_name, 'int')
 
     @staticmethod
     def create_parser():
@@ -17,10 +19,9 @@ class Frequency(object):
             description='Frequency processing options.')
 
         parser.add_argument('read_file_name', type=str, help="""
-                            Required. Enter the path to the frequency changes
-                            file that you would like analyze.  The file should
-                            be a plaintext file with each frequency change on
-                            its own line.
+                            Required. Enter the path to the input file that you
+                            would like to analyze.  The file should be a
+                            plaintext file with each record on its own line.
                             """)
         parser.add_argument('-d', '--find_first_duplicate', action='store_true',
                             help="""Find first duplicate frequency.""")
@@ -29,15 +30,6 @@ class Frequency(object):
                             file""")
 
         return parser
-
-    @staticmethod
-    def load_frequency_changes_from_file(filename):
-        """Open file specified from user input and read in the frequency changes."""
-        freq_changes = []
-        with open(filename) as frequency_file:
-            for change in frequency_file:
-                freq_changes.append(int(change))
-        return freq_changes
 
     def process_request(self):
         results = {}

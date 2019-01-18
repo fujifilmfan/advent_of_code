@@ -91,3 +91,56 @@ Number of square inches claimed once: 365706
 Number of square inches claimed more than once: 121259
 Non-overlapping claim IDs: ['239']
 ```
+
+### Day 4: Repose Record
+
+#### What I learned
+* Don't over-complicate things. I got stuck trying to record both waking and sleeping minutes for each guard shift; calculating waking minutes is tricky since guards might start after the start of the hour and end before the end of the hour  
+   * example code from trying to do the above:
+   ```
+       def process_records(self):
+        for record in self.sorted_records:
+            if "Guard" in record:
+                if self.guard_on_duty != 0:
+                    if int(record[15:17]) > self.last_wake:
+                        self.guard_records[self.guard_on_duty][self.guard_start_time]['awake'].extend(list(range(
+                        self.last_wake, int(record[15:17]))))
+                    else:
+                        self.guard_records[self.guard_on_duty][self.guard_start_time]['awake'].extend(list(range(
+                            self.last_wake, 60)))
+                self.guard_on_duty = record[26:-13]
+                self.guard_start_time = record[1:17]
+                if self.guard_on_duty not in self.guard_records:
+                    self.guard_records[self.guard_on_duty] = {}
+                    self.guard_records[self.guard_on_duty][self.guard_start_time] = {'awake': [], 'asleep': []}
+                elif self.guard_start_time not in self.guard_records[self.guard_on_duty]:
+                    self.guard_records[self.guard_on_duty][self.guard_start_time] = {'awake': [], 'asleep': []}
+                self.last_wake = 0 if int(record[12:14]) == 23 else int(record[15:17])
+            elif "falls" in record:
+                self.last_sleep = int(record[15:17])
+                self.guard_records[self.guard_on_duty][self.guard_start_time]['awake'].extend(list(range(
+                    self.last_wake, self.last_sleep)))
+            elif "wakes" in record:
+                self.last_wake = int(record[15:17])
+                self.guard_records[self.guard_on_duty][self.guard_start_time]['asleep'].extend(list(range(
+                    self.last_sleep, self.last_wake)))
+   ```
+   * another related attempt:  
+   ```
+       def remove_off_duty_minutes(self):
+        awake_list = self.guard_records[self.guard_on_duty][self.guard_start_time]['awake']
+        asleep_list = self.guard_records[self.guard_on_duty][self.guard_start_time]['asleep']
+        # remove minutes at beginning of hour for which guard was not on duty
+        # check for start times in the 00 hour; if start time is 23, then existing list is valid for beginning of hour
+        if int(self.guard_start_time[11:13]) == 00:
+            # create list of minutes at beginning of hour for which guard was not on duty
+            late_minutes = list(range(0, int(self.guard_start_time[14:16])))
+            # create new awake list without the late minutes
+            self.guard_records[self.guard_on_duty][self.guard_start_time]['awake'] = [minute for minute in awake_list
+                                                                                      if minute not in late_minutes]
+            return self.guard_records
+   ```
+   * I was filling out an 'awake' key with `self.guard_records[self.guard_on_duty][self.guard_start_time] = {'awake': list(range(0, 60)), 'asleep': []}` so that I could then subtract out the sleeping minutes when I realized I don't need the waking minutes at all
+* how to use **sorted** and **max** with **lambda** functions; examples:  
+   * `sorted(self.records, key=lambda r: re.findall('\d{4}-\d{2}-\d{2}\W\d{2}:\d{2}', r))`  
+   * `max(self.minutes_asleep.keys(), key=(lambda k: self.minutes_asleep[k]['total']))`  

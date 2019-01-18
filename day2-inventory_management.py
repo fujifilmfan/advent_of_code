@@ -32,7 +32,7 @@ class Checksum(object):
     def find_repeats(self):
         for box_id in self.box_ids:
             counter = Counter(box_id)
-            for letter in letters:
+            for letter in box_id:
                 if counter[letter] == 2:
                     self.twos.add(box_id)
                 if counter[letter] == 3:

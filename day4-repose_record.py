@@ -9,30 +9,12 @@ from file_ops import return_file_contents
 
 class Records(object):
 
-    def __init__(self):
-        parser = self.create_parser()
-        self.args = parser.parse_args()
-        self.records = return_file_contents(self.args.read_file_name)
+    def __init__(self, guard_records):
+        self.records = guard_records
         self.sorted_records = []
-        self.guard_on_duty = 0
-        self.guard_start_time = ''
-        self.last_wake = 0
-        self.last_sleep = 0
         self.guard_records = {}
         self.minutes_asleep = {}
-
-    @staticmethod
-    def create_parser():
-        parser = argparse.ArgumentParser(
-            description='Guard records processing options.')
-
-        parser.add_argument('read_file_name', type=str, help="""
-                            Required. Enter the path to the input file that you
-                            would like to analyze.  The file should be a
-                            plaintext file with each record on its own line.
-                            """)
-
-        return parser
+        self.search_pattern = re.compile('\d{4}-\d{2}-\d{2}\W\d{2}:\d{2}')
 
     def process_records(self):
         self.sort_records()
@@ -41,7 +23,10 @@ class Records(object):
 
     def sort_records(self):
         """Sort guard repose records by timestamp."""
-        self.sorted_records = sorted(self.records, key=lambda r: re.findall('\d{4}-\d{2}-\d{2}\W\d{2}:\d{2}', r))
+        # the lambda function and regex is actually unnecessary here; sorted() will work fine
+        # self.sorted_records = sorted(self.records, key=lambda r: re.findall(self.search_pattern, r))
+        # list.sort() does not work since self.records is not yet a list
+        self.sorted_records = sorted(self.records)
 
     def create_guard_record_dict(self):
         """Create guard record dictionary in the following format:
@@ -51,25 +36,30 @@ class Records(object):
                        '1518-11-22 23:59': []}
             }
         """
+        guard_on_duty = 0
         for record in self.sorted_records:
             if "Guard" in record:
+                # guard_on_duty = 0
                 # the slice [26:-14] gets just the guard ID, e.g. 709 or 1811; the ID is the only variable-length
                 # part of the record line; this is to keep track of which guard is on duty at any time
-                self.guard_on_duty = record[26:-14]
-                self.guard_start_time = record[1:17]
-                # create a guard ID key in the guard_records dictionary if it's not already there
-                if self.guard_on_duty not in self.guard_records:
-                    self.guard_records[self.guard_on_duty] = {}
-                # create a shift time start key in the guard ID sub-dictionary if it's not already there
-                if self.guard_start_time not in self.guard_records[self.guard_on_duty]:
-                    self.guard_records[self.guard_on_duty][self.guard_start_time] = []
-            elif "falls" in record:
+                guard_on_duty = record[26:-14]
+                # the slice [1:17] gives the timestamp of the start time
+                guard_start_time = record[1:17]
+                # Create a guard ID key in the guard_records dictionary if it's not already there
+                if guard_on_duty not in self.guard_records:
+                    self.guard_records[guard_on_duty] = {}
+                # Create a shift time start key in the guard ID sub-dictionary if it's not already there
+                if guard_start_time not in self.guard_records[guard_on_duty]:
+                    self.guard_records[guard_on_duty][guard_start_time] = []
+            else:
                 # the slice [15:17] gets the double-digit minute of the record
-                self.last_sleep = int(record[15:17])
-            elif "wakes" in record:
-                self.last_wake = int(record[15:17])
-                self.guard_records[self.guard_on_duty][self.guard_start_time].extend(list(range(self.last_sleep,
-                                                                                                self.last_wake)))
+                minute = int(record[15:17])
+                if "falls" in record:
+                    last_sleep = minute
+                elif "wakes" in record:
+                    last_wake = minute
+                    # Add the minutes asleep to a list linked to the guard's start time
+                    self.guard_records[guard_on_duty][guard_start_time].extend(list(range(last_sleep, last_wake)))
 
     def find_total_minutes_asleep(self):
         for guard in self.guard_records:
@@ -109,19 +99,34 @@ class Records(object):
 
     def find_sleepiest_minute(self, guard):
         try:
-            sleepiest_minute = max(self.minutes_asleep[guard]['frequency'].keys(), key=(lambda k: self.minutes_asleep[
+            sleepiest_minute = max(self.minutes_asleep[guard]['frequency'], key=(lambda k: self.minutes_asleep[
                 guard]['frequency'][k]))
             return[sleepiest_minute, self.minutes_asleep[guard]['frequency'][sleepiest_minute]]
         except ValueError:
             return[0, 0]
 
 
-def analyze_records():
-    records = Records()
+def analyze_records(guard_records):
+    records = Records(guard_records)
     records.process_records()
     records.find_sleepiest_guard_by_total()
     records.find_sleepiest_guard_by_minute()
 
 
 if __name__ == '__main__':
-    analyze_records()
+    parser = argparse.ArgumentParser(
+        description='Guard records processing options.')
+
+    parser.add_argument('read_file_name', type=str, help="""
+                        Required. Enter the path to the input file that you
+                        would like to analyze.  The file should be a
+                        plaintext file with each record on its own line.
+                        """)
+    args = parser.parse_args()
+    guard_records = return_file_contents(args.read_file_name)
+    # print(guard_records)
+    analyze_records(guard_records)
+
+# Output:
+# Guard #73: 461 minutes total, 44 sleepiest minute, value: 3212
+# Guard #191: 26 sleepiest minute, frequency: 17, value: 4966

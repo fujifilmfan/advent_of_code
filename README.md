@@ -144,3 +144,9 @@ Non-overlapping claim IDs: ['239']
 * how to use **sorted** and **max** with **lambda** functions; examples:  
    * `sorted(self.records, key=lambda r: re.findall('\d{4}-\d{2}-\d{2}\W\d{2}:\d{2}', r))`  
    * `max(self.minutes_asleep.keys(), key=(lambda k: self.minutes_asleep[k]['total']))`  
+* **sorted()** makes a new, sorted list from an iterable, while **list.sort()** mutates an existing list; see [What is the difference between `sorted(list)` vs `list.sort()`?](https://stackoverflow.com/questions/22442378/what-is-the-difference-between-sortedlist-vs-list-sort)
+* from Ryan:  
+   * try to avoid classes which break if you instantiate more than one. Since argparse should only be set up and invoked once, it’s better to do in your if __main__ and then pass in the filename as a param to the __init__ for Records()  
+   * compile regex if it's going to be used many times  
+   * in `max(dict_object.keys(), ...)`, `.keys()` is redundant  
+   

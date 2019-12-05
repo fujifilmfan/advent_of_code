@@ -41,9 +41,7 @@ class RunIntcode:
                 
             else:
                 print(f"An error code was encountered: {self.temp_codes[frame]} at frame {frame}")
-                
-                self.temp_codes = []
-                
+                                
                 break
                 
         # self.temp_codes = []

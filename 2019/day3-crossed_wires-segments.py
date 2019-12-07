@@ -86,6 +86,7 @@ def check_for_crossing(nodes, previous_node, current_node):
             first = nodes[i]
             second = nodes[i+1]
     
+            # TODO: Clean up this mess
             if (previous_node[0] == current_node[0] and (
                     (first[0] <= previous_node[0] and previous_node[0] <= (second)[0]) or
                     (first[0] >= previous_node[0] and previous_node[0] >= (second)[0])
@@ -132,7 +133,7 @@ def check_for_crossing(nodes, previous_node, current_node):
     return crossings
 
 
-def find_shortest_distance(crossings):
+def find_manhattan_distance(crossings):
 
     shortest_d = 1000000
 
@@ -147,9 +148,79 @@ def find_shortest_distance(crossings):
     return shortest_d
 
 
-def find_shortest_path():
-    pass
+def traverse_path_to_crossings(crossings, wire_path):
+    
+    x = 0
+    y = 0
+    distance_traversed = 0
+    crossing_distances = []
 
+    for wire_segment in wire_path:
+
+        dir_ = wire_segment[0]
+        mag = int(wire_segment[1:])
+        
+        if dir_ == 'R':
+            for i in range(mag):
+                distance_traversed += 1
+                x += 1
+                if is_current_point_a_crossing(crossings, (x, y)):
+                    crossing_distances.append((x, y))
+                    crossing_distances.append(distance_traversed)
+
+        elif dir_ == 'L':
+            for i in range(mag):
+                distance_traversed += 1
+                x -= 1
+                if is_current_point_a_crossing(crossings, (x, y)):
+                    crossing_distances.append((x, y))
+                    crossing_distances.append(distance_traversed)
+
+        elif dir_ == 'U':
+            for i in range(mag):
+                distance_traversed += 1
+                y += 1
+                if is_current_point_a_crossing(crossings, (x, y)):
+                    crossing_distances.append((x, y))
+                    crossing_distances.append(distance_traversed)
+
+        elif dir_ == 'D':
+            for i in range(mag):
+                distance_traversed += 1
+                y -= 1
+                if is_current_point_a_crossing(crossings, (x, y)):
+                    crossing_distances.append((x, y))
+                    crossing_distances.append(distance_traversed)
+
+        else:
+            print(f"Which direction should I go? You told me {dir_}")
+
+    return crossing_distances
+
+
+def is_current_point_a_crossing(crossings, current_point):
+
+    for crossing in crossings:
+        if crossing == current_point:
+            return True
+    return False
+
+
+def find_shortest_combined_path(crossings, crossing_distances):
+    
+    shortest_distance = 1000000
+    
+    for crossing in crossings:
+        distance = 0
+        for crossing_distance in crossing_distances:
+            for i in range(len(crossing_distance)):
+                if crossing_distance[i] == crossing:
+                    distance += crossing_distance[i + 1]
+        if distance < shortest_distance:
+            shortest_distance = distance
+    
+    return shortest_distance
+                    
 
 def solve_crossed_wires(wire_paths):
     
@@ -160,8 +231,17 @@ def solve_crossed_wires(wire_paths):
     crossings = find_crossings(nodes, wire_path_2)
     print(crossings)
 
-    shortest_distance = find_shortest_distance(crossings)  
+    shortest_distance = find_manhattan_distance(crossings)  
     print(shortest_distance)
+    
+    crossing_distances_1 = traverse_path_to_crossings(crossings, wire_path_1)
+    crossing_distances_2 = traverse_path_to_crossings(crossings, wire_path_2)
+    print(crossing_distances_1, crossing_distances_2)
+
+    crossing_distances = [crossing_distances_1, crossing_distances_2]
+    shortest_combined_path = find_shortest_combined_path(
+        crossings[1:], crossing_distances)
+    print(shortest_combined_path)
 
 
 if __name__ == '__main__':
@@ -180,3 +260,4 @@ if __name__ == '__main__':
 # Part One:
 # 1211
 # Part Two:
+# 101386

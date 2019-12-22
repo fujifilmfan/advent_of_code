@@ -10,5 +10,5 @@ def return_file_contents(filename, *args):
                 file_contents.append(int(line))
         else:
             for line in input_file:
-                file_contents.append(line)
+                file_contents.append(line.rstrip('\n'))
     return file_contents

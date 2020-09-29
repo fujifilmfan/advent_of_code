@@ -95,7 +95,7 @@ class Body:
                 connections += 1
                 ancestor = body_objects[ancestor].primary
 
-        self.distance_to_x = connections
+        self.distance_to_x = connections if x_found is True else 0
 
 
         # while ancestor is not x:
@@ -158,7 +158,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     program_input = return_file_contents(args.read_file_name)
     create_body_objects(program_input)
-    print(count_connections('62D'))
+    print(count_connections('COM'))
     # print_body_objects()
 
 

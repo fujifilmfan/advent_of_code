@@ -2,9 +2,8 @@
 
 import argparse
 from collections import Counter
-from string import ascii_lowercase as letters
 
-from file_ops import return_file_contents
+from . import file_ops
 
 
 class Checksum(object):
@@ -12,7 +11,7 @@ class Checksum(object):
     def __init__(self):
         parser = self.create_parser()
         self.args = parser.parse_args()
-        self.box_ids = return_file_contents(self.args.read_file_name)
+        self.box_ids = file_ops.return_file_contents(self.args.read_file_name)
         self.twos = set()
         self.threes = set()
 
@@ -60,8 +59,10 @@ class Checksum(object):
 def generate_checksum():
     checksum = Checksum()
     checksum.find_repeats()
-    print("checksum: {checksum}".format(checksum=checksum.calculate_checksum()))
-    print("common letters: {letters}".format(letters=checksum.find_box_ids_that_differ_by_one_char()))
+    print("checksum: {checksum}".format(
+        checksum=checksum.calculate_checksum()))
+    print("common letters: {letters}".format(
+        letters=checksum.find_box_ids_that_differ_by_one_char()))
 
 
 if __name__ == '__main__':

@@ -7,8 +7,9 @@ def return_file_contents(filename, *args):
     with open(filename) as input_file:
         if 'int' in args:
             for line in input_file:
+                # yield int(line)
                 file_contents.append(int(line))
         else:
             for line in input_file:
-                file_contents.append(line)
+                file_contents.append(line.rstrip('\n'))
     return file_contents

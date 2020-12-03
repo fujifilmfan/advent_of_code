@@ -3,7 +3,7 @@
 import argparse
 from itertools import product
 
-from file_ops import return_file_contents
+from . import file_ops
 
 
 class Claims(object):
@@ -11,7 +11,7 @@ class Claims(object):
     def __init__(self):
         parser = self.create_parser()
         self.args = parser.parse_args()
-        self.claims = return_file_contents(self.args.read_file_name)
+        self.claims = file_ops.return_file_contents(self.args.read_file_name)
         self.coord_tuples = {}
         self.claimed_once = set()
         self.claimed_more_than_once = set()
@@ -31,7 +31,7 @@ class Claims(object):
         return parser
 
     def process_claims(self):
-        """Calls methods to parse the claims and determine the coordinate pairs for each claim."""
+        """Call methods to parse claims and determine coordinate pairs."""
         claim_dict = self.split_claims()
         coords = self.enumerate_coordinates(claim_dict)
         # self.create_coord_tuples() returns a class variable

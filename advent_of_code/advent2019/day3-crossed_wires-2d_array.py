@@ -3,7 +3,7 @@
 import argparse
 import numpy as np
 
-from file_ops import return_file_contents
+from . import file_ops
 
 
 def determine_array_size(wire_paths):
@@ -155,7 +155,7 @@ if __name__ == '__main__':
                         plaintext file with each record on its own line.
                         """)
     args = parser.parse_args()
-    wire_paths = return_file_contents(args.read_file_name)
+    wire_paths = file_ops.return_file_contents(args.read_file_name)
     get_shortest_distance(wire_paths)
 
 # Part One:

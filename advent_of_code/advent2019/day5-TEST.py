@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
 import argparse
-from copy import deepcopy
 
-from file_ops import return_file_contents
+from . import file_ops
 
 
 class RunIntcode:
@@ -271,7 +270,7 @@ if __name__ == '__main__':
     parser.add_argument('input', type=int, help="""
                         Starting program input.""")
     args = parser.parse_args()
-    program = return_file_contents(args.read_file_name)
+    program = file_ops.return_file_contents(args.read_file_name)
     run_intcode(program, args.input)
 
 # Part One:

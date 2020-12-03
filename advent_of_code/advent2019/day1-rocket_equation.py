@@ -3,7 +3,7 @@
 import argparse
 from math import floor
 
-from file_ops import return_file_contents
+from . import file_ops
 
 
 class FuelCalc:
@@ -61,7 +61,7 @@ if __name__ == '__main__':
                         plaintext file with each record on its own line.
                         """)
     args = parser.parse_args()
-    module_masses = return_file_contents(args.read_file_name)
+    module_masses = file_ops.return_file_contents(args.read_file_name)
     calculate_fuel_req(module_masses)
 
 # Part One

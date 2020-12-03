@@ -1,5 +1,4 @@
-Advent of Code 2018: Solution Notes
------------------------------------
+## Advent of Code 2018 Notes
 
 [Day 1: Chronal Calibration](#day-1-chronal-calibration)  
 [Day 2: Inventory Management System](#day-2-inventory-management-system)  

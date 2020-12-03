@@ -2,7 +2,7 @@
 
 import argparse
 
-from file_ops import return_file_contents
+from . import file_ops
 
 
 def record_nodes(wire_path):
@@ -254,7 +254,7 @@ if __name__ == '__main__':
                         plaintext file with each record on its own line.
                         """)
     args = parser.parse_args()
-    wire_paths = return_file_contents(args.read_file_name)
+    wire_paths = file_ops.return_file_contents(args.read_file_name)
     solve_crossed_wires(wire_paths)
 
 # Part One:

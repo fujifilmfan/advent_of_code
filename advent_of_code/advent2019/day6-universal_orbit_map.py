@@ -2,7 +2,7 @@
 
 import argparse
 
-from file_ops import return_file_contents
+from . import file_ops
 
 
 """
@@ -156,7 +156,7 @@ if __name__ == '__main__':
                         plaintext file with each record on its own line.
                         """)
     args = parser.parse_args()
-    program_input = return_file_contents(args.read_file_name)
+    program_input = file_ops.return_file_contents(args.read_file_name)
     create_body_objects(program_input)
     print(count_connections('COM'))
     # print_body_objects()

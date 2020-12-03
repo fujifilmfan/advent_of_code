@@ -4,7 +4,7 @@ import argparse
 import re
 from collections import Counter
 
-from file_ops import return_file_contents
+from . import file_ops
 
 
 class Records(object):
@@ -123,7 +123,7 @@ if __name__ == '__main__':
                         plaintext file with each record on its own line.
                         """)
     args = parser.parse_args()
-    guard_records = return_file_contents(args.read_file_name)
+    guard_records = file_ops.return_file_contents(args.read_file_name)
     # print(guard_records)
     analyze_records(guard_records)
 

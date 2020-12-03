@@ -3,7 +3,7 @@
 import argparse
 from copy import deepcopy
 
-from file_ops import return_file_contents
+from . import file_ops
 
 
 class RunIntcode:
@@ -86,7 +86,7 @@ if __name__ == '__main__':
                         plaintext file with each record on its own line.
                         """)
     args = parser.parse_args()
-    program = return_file_contents(args.read_file_name)
+    program = file_ops.return_file_contents(args.read_file_name)
     run_intcode(program)
 
 # Part One:

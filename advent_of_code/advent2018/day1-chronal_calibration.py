@@ -3,7 +3,7 @@
 import argparse
 from itertools import cycle
 
-from file_ops import return_file_contents
+from . import file_ops
 
 
 class Frequency(object):
@@ -11,7 +11,8 @@ class Frequency(object):
     def __init__(self):
         parser = self.create_parser()
         self.args = parser.parse_args()
-        self.changes = return_file_contents(self.args.read_file_name, 'int')
+        self.changes = file_ops.return_file_contents(
+            self.args.read_file_name, 'int')
 
     @staticmethod
     def create_parser():

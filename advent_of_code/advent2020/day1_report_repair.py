@@ -44,30 +44,45 @@ def main(args):
     return product
 
 
-def find_summands(sum_, num_summands, expenses):
-    if num_summands > 2:
-        summands = None
-        for num, expense in enumerate(expenses):
-            if num_summands-1 <= len(expenses[num+1:]):
-                summands = find_summands(
-                    sum_-expense, num_summands-1, expenses[num+1:])
-            if summands is None:
-                continue
-            else:
-                return summands + (expense,)
-    elif num_summands == 2:
-        skip = {'greatest': sum_ - min(expenses), 'least': sum_ - max(expenses)}
-        for num, expense in enumerate(expenses):
-            if skip['least'] > expense > skip['greatest']:
-                continue
-            if sum_ - expense in expenses[num+1:]:
-                return expense, sum_-expense
-            continue
+def find_summands(target, num_summands, expenses):
+
+    for expense in expenses:
+        # Shorten the list so we're only searching ahead.
+        expenses = expenses[1:]
+        diff = target - expense
+
+        if num_summands == 2 and diff in expenses:
+            return diff, expense
+        elif num_summands > 2:
+            if num_summands-1 <= len(expenses):
+                summands = find_summands(diff, num_summands-1, expenses)
+                if summands is not None:
+                    return summands + (expense, )
 
 
-# seen = []
+# Previous version
+# def find_summands(sum_, num_summands, expenses):
+#     if num_summands > 2:
+#         summands = None
+#         for num, expense in enumerate(expenses):
+#             if num_summands-1 <= len(expenses[num+1:]):
+#                 summands = find_summands(
+#                     sum_-expense, num_summands-1, expenses[num+1:])
+#             if summands is None:
+#                 continue
+#             else:
+#                 return summands + (expense,)
+#     elif num_summands == 2:
+#         skip = {'greatest': sum_ - min(expenses), 'least': sum_ - max(expenses)}
+#         for num, expense in enumerate(expenses):
+#             if skip['least'] > expense > skip['greatest']:
+#                 continue
+#             if sum_ - expense in expenses[num+1:]:
+#                 return expense, sum_-expense
+#             continue
+
+
 # Partly working generator version (only 2 summands)
-
 # def find_summands(sum_, num_summands, expenses):
 #     if num_summands > 2:
 #         for expense in expenses:
@@ -85,25 +100,25 @@ def find_summands(sum_, num_summands, expenses):
 #                 return expense, sum_-expense
 #             # continue
 
+
 # Original functions
+def find_sum_from_two(sum_, expenses):
+    skip = {'greatest': sum_ - min(expenses), 'least': sum_ - max(expenses)}
+    for num, expense in enumerate(expenses):
+        if skip['least'] > expense > skip['greatest']:
+            continue
+        if sum_ - expense in expenses[num+1:]:
+            return expense, sum_-expense
+        continue
 
-# def find_sum_from_two(sum_, expenses):
-#     skip = {'greatest': sum_ - min(expenses), 'least': sum_ - max(expenses)}
-#     for num, expense in enumerate(expenses):
-#         if skip['least'] > expense > skip['greatest']:
-#             continue
-#         if sum_ - expense in expenses[num+1:]:
-#             return expense, sum_-expense
-#         continue
 
-
-# def find_sum_from_three(sum_, expenses):
-#     for num, expense in enumerate(expenses):
-#         summands = find_sum_from_two(sum_-expense, expenses[num+1:])
-#         if summands is None:
-#             continue
-#         else:
-#             return summands + (expense,)
+def find_sum_from_three(sum_, expenses):
+    for num, expense in enumerate(expenses):
+        summands = find_sum_from_two(sum_-expense, expenses[num+1:])
+        if summands is None:
+            continue
+        else:
+            return summands + (expense,)
 
 
 if __name__ == '__main__':
@@ -113,4 +128,4 @@ if __name__ == '__main__':
 # Part One
 # 545379
 # Part Two
-# 257778836
+# 257778836 (973, 428, 619)

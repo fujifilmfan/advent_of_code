@@ -2,8 +2,6 @@
 
 import argparse
 
-import advent_of_code.file_ops as file_ops
-
 SUM = 2020
 
 
@@ -30,14 +28,15 @@ def return_parsed_args(args):
     return parser.parse_args(args)
 
 
+def lines_from_file(path):
+    with open(path) as handle:
+        for line in handle:
+            yield line.rstrip('\n')
+
+
 def main(args):
     cli_args = return_parsed_args(args)
-    expenses = []
-
-    with open(cli_args.filename) as handler:
-        for line in handler:
-            expenses.append(int(line))
-
+    expenses = lines_from_file(cli_args.filename)
     num_summands = cli_args.summands
     product = 1
     summands = find_summands(SUM, num_summands, expenses)

@@ -49,6 +49,12 @@ def return_parsed_args(args):
     return parser.parse_args(args)
 
 
+def lines_from_file(path):
+    with open(path) as handle:
+        for line in handle:
+            yield line.rstrip('\n')
+
+
 def main(args):
     cli_args = return_parsed_args(args)
     lines = lines_from_file(cli_args.filename)
@@ -65,12 +71,6 @@ def main(args):
 
     print(valid_pwds)
     return valid_pwds
-
-
-def lines_from_file(path):
-    with open(path) as handle:
-        for line in handle:
-            yield line.rstrip('\n')
 
 
 def password_entry(lines):

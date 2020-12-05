@@ -2,7 +2,7 @@
 
 import pytest
 
-from advent_of_code.advent2020 import day2_password_philosophy as pwd_phil
+from advent_of_code.advent2020 import day2_password_philosophy as day2
 
 _MODULE = 'advent_of_code.advent2020.day2_password_philosophy'
 
@@ -13,11 +13,17 @@ _MODULE = 'advent_of_code.advent2020.day2_password_philosophy'
     (((2, 9), 'c', 'ccccccccc'), True),
 ])
 def test_evaluate_sled_policy(entry, expected):
+    """Test day2_password_philosophy.evaluate_sled_policy.
+
+    :param entry: TUPLE; policies and passwords
+    :param expected: BOOL; does the password satisfy the policy?
+    :return: None
+    """
 
     # Arrange
 
     # Act
-    actual = pwd_phil.evaluate_sled_policy(entry)
+    actual = day2.evaluate_sled_policy(entry)
 
     # Assert
     assert actual == expected
@@ -29,25 +35,31 @@ def test_evaluate_sled_policy(entry, expected):
     (((2, 9), 'c', 'ccccccccc'), False),
 ])
 def test_evaluate_toboggan_policy(entry, expected):
+    """Test day2_password_philosophy.evaluate_toboggan_policy.
+
+    :param entry: TUPLE; policies and passwords
+    :param expected: BOOL; does the password satisfy the policy?
+    :return: None
+    """
 
     # Arrange
 
     # Act
-    actual = pwd_phil.evaluate_toboggan_policy(entry)
+    actual = day2.evaluate_toboggan_policy(entry)
 
     # Assert
     assert actual == expected
 
 
 def test_password_entry():
+    """Test day2_password_philosophy.password_entry."""
 
     # Arrange
     entry = ['10-20 d: djddddccdbdddddddndd']
     expected = ((10, 20), 'd', 'djddddccdbdddddddndd')
 
     # Act
-    actual = next(pwd_phil.password_entry(entry))
+    actual = next(day2.password_entry(entry))
 
     # Assert
     assert actual == expected
-

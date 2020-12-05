@@ -17,7 +17,7 @@ def return_parsed_args(args):
 
     parser = argparse.ArgumentParser(
         description='Report repair solution options')
-    parser.add_argument('read_file_name', type=str, help="""
+    parser.add_argument('filename', type=str, help="""
                         Required. Enter the path to the input file that 
                         you would like to analyze. The file should be a
                         plaintext file with each record on its own line.
@@ -32,7 +32,12 @@ def return_parsed_args(args):
 
 def main(args):
     cli_args = return_parsed_args(args)
-    expenses = file_ops.return_file_contents(cli_args.read_file_name, 'int')
+    expenses = []
+
+    with open(cli_args.filename) as handler:
+        for line in handler:
+            expenses.append(int(line))
+
     num_summands = cli_args.summands
     product = 1
     summands = find_summands(SUM, num_summands, expenses)

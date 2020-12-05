@@ -22,9 +22,77 @@ within the limits of their respective policies.
 
 How many passwords are valid according to their policies?
 """
+
 import argparse
 
-import advent_of_code.file_ops as file_ops
+
+def return_parsed_args(args):
+    """Parse and define command line arguments.
+
+    :param args: LIST; like ['-t 40']
+    :return: OBJ; Namespace object looking something like this:
+        Namespace(post=False, schedule=None, threshold=40)
+    """
+
+    parser = argparse.ArgumentParser(
+        description='Valid password count')
+    parser.add_argument('filename', type=str, help="""
+                        Required. Enter the path to the input file that 
+                        you would like to analyze. The file should be a
+                        plaintext file with each record on its own line.
+                        """)
+    parser.add_argument('-s', '--sled', action='store_true', help="""
+                        Use this argument to evaluate passwords using 
+                        the sled rental place policy instead of the 
+                        Official Toboggan Corporate Policy.
+                        """)
+    return parser.parse_args(args)
+
+
+def main(args):
+    cli_args = return_parsed_args(args)
+    lines = lines_from_file(cli_args.filename)
+    policy_passwords = password_entry(lines)
+
+    valid_pwds = 0
+    for policy_pwd in policy_passwords:
+        if cli_args.sled is True:
+            if evaluate_sled_policy(policy_pwd) is True:
+                valid_pwds += 1
+        else:
+            if evaluate_toboggan_policy(policy_pwd) is True:
+                valid_pwds += 1
+
+    print(valid_pwds)
+    return valid_pwds
+
+
+def lines_from_file(path):
+    with open(path) as handle:
+        for line in handle:
+            yield line.rstrip('\n')
+
+
+def password_entry(lines):
+    for line in lines:
+        span, char, pwd = line.split(' ')
+        num1, num2 = span.split('-')
+        char = char.rstrip(':')
+        yield (int(num1), int(num2)), char, pwd
+
+
+def evaluate_sled_policy(policy_password):
+    (min_, max_), char, pwd = policy_password
+    return True if min_ <= pwd.count(char) <= max_ else False
+
+
+def evaluate_toboggan_policy(policy_password):
+    (pos1, pos2), char, pwd = policy_password
+    if pwd[pos1-1] == char and pwd[pos2-1] == char:
+        return False
+    elif pwd[pos1-1] != char and pwd[pos2-1] != char:
+        return False
+    return True
 
 
 if __name__ == '__main__':
@@ -32,6 +100,6 @@ if __name__ == '__main__':
     main(sys.argv[1:])
 
 # Part One
-#
+# 439
 # Part Two
-#
+# 584

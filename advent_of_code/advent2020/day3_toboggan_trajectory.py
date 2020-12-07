@@ -26,13 +26,18 @@ def return_parsed_args(args):
     return parser.parse_args(args)
 
 
+def lines_from_file(path):
+    lines = []
+    with open(path) as handle:
+        for line in handle:
+            lines.append(line.rstrip('\n'))
+    return lines
+
+
 def main(args):
     cli_args = return_parsed_args(args)
 
-    local_map = []
-    with open(cli_args.filename) as handler:
-        for line in handler:
-            local_map.append(line.rstrip('\n'))
+    local_map = lines_from_file(cli_args.filename)
 
     paths = [
         (1, 1),

@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 """
-Due to some questionable network security, you realize you might be
-able to solve both of these problems at the same time.
-[Haha!]
+As a sanity check, look through your list of boarding passes. What is
+the highest seat ID on a boarding pass?
 
+What is the ID of your seat?
 """
 
 import argparse

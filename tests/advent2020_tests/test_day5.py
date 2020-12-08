@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import re
-
 import pytest
 
 from advent_of_code.advent2020 import day5_binary_boarding as day5

@@ -1,5 +1,0 @@
-/Users/acetone/code/problems/advent_of_code/.venv/bin/python /Users/acetone/code/problems/advent_of_code/advent2020/day1_report_repair.py day1_input.txt
-/Users/acetone/code/problems/advent_of_code/advent2020
-['/Users/acetone/code/problems/advent_of_code/advent2020', '/Users/acetone/code/problems/advent_of_code', '/Users/acetone/.pyenv/versions/3.7.8/lib/python37.zip', '/Users/acetone/.pyenv/versions/3.7.8/lib/python3.7', '/Users/acetone/.pyenv/versions/3.7.8/lib/python3.7/lib-dynload', '/Users/acetone/code/problems/advent_of_code/.venv/lib/python3.7/site-packages']
-545379
-

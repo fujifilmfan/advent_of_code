@@ -11,7 +11,7 @@ The script uses the import syntax `import advent_of_code.file_ops as file_ops`,
 and the test file uses `from advent_of_code.advent2020 import day1_report_repair as report_repair`.
 
 #### Terminal
-From the project root:
+From the project root:  
 `$ python -m advent_of_code.advent2020.day1_report_repair 
 ~/code/problems/advent_of_code/advent_of_code/advent2020/day1_input.txt -s 3`  
 `$ pytest`  

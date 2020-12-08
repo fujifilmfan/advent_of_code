@@ -4,7 +4,6 @@ import re
 
 import pytest
 
-
 from advent_of_code.advent2020 import day4_passport_processing as day4
 
 _MODULE = 'advent_of_code.advent2020.day4_passport_processing'

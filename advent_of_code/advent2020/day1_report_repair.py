@@ -51,7 +51,7 @@ def main(args):
 def find_summands(target, num_summands, expenses):
 
     for expense in expenses:
-        # Shorten the list so we're only searching ahead.
+        # Shorten the list so we're only looking ahead.
         expenses = expenses[1:]
         diff = target - expense
 

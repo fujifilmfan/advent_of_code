@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 """
-Another group asks for your help, then another, and eventually you've
-collected answers from every group on the plane (your puzzle input).
-Each group's answers are separated by a blank line, and within each
-group, each person's answers are on a single line.
+Another group_response asks for your help, then another, and eventually you've
+collected answers from every group_response on the plane (your puzzle input).
+Each group_response's answers are separated by a blank line, and within each
+group_response, each person's answers are on a single line.
 
-For each group, count the number of questions to which anyone answered
+Part 1
+For each group_response, count the number of questions to which anyone answered
 "yes". What is the sum of those counts?
+
+Part 2
+For each group_response, count the number of questions to which everyone
+answered "yes". What is the sum of those counts?
 """
 
 import argparse
@@ -31,6 +36,11 @@ def return_parsed_args(args):
 
 
 def lines_from_file(path):
+    """Yield lines from a file.
+
+    :param path: STR; path to input file
+    :return: OBJ; generator
+    """
     with open(path) as handle:
         for line in handle:
             yield line.rstrip('\n')
@@ -40,27 +50,68 @@ def main(args):
     cli_args = return_parsed_args(args)
     path = cli_args.filename
 
-    total = sum(customs_responses_from_file(path))
+    groups = customs_responses_from_file(path)
+    yeses = 0
+    group_yeses = 0
 
-    print(total)
-    return total
+    for group in groups:
+        yeses += count_yeses(group)
+        group_yeses += count_group_yeses(group)
+
+    print(yeses)
+    print(group_yeses)
 
 
 def customs_responses_from_file(path):
+    """Read lines from file and yield group responses from input file.
+
+    :param path: STR; path to input file
+    :return: OBJ; generator
+    """
+
     customs_responses = lines_from_file(path)
-    yield from count_yeses(customs_responses)
+    yield from group_response(customs_responses)
 
 
-def count_yeses(customs_responses):
-    seen = set()
+def group_response(customs_responses):
+    """Yield group_response from the customs_responses input.
+
+    :param customs_responses: OBJ; generator
+    :return: OBJ; generator
+    """
+    group_resp = []
     for response in customs_responses:
         if response == '':
-            yield len(seen)
-            seen = set()
+            yield group_resp
+            group_resp = []
             continue
-        resp_set = set(response)
+        group_resp.append(response)
+    yield group_resp
+
+
+def count_yeses(group):
+    """Count the number of questions to which anyone answered "yes".
+
+    :param group: OBJ; generator
+    :return: INT
+    """
+    seen = set()
+    for resp in group:
+        resp_set = set(resp)
         seen.update(resp_set)
-    yield len(seen)
+    return len(seen)
+
+
+def count_group_yeses(group):
+    """Count the number of questions to which everyone answered "yes".
+
+    :param group: OBJ; generator
+    :return: INT
+    """
+    universal = set(group[0])
+    for resp in group[1:]:
+        universal.intersection_update(set(resp))
+    return len(universal)
 
 
 if __name__ == '__main__':
@@ -70,4 +121,4 @@ if __name__ == '__main__':
 # Part One
 # 6778
 # Part Two
-#
+# 3406

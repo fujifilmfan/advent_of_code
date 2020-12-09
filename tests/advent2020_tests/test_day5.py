@@ -26,7 +26,8 @@ def test_calculate_seat_id(side_effects, expected, mocker):
 
     # Arrange
     boarding_passes = ['any_iterable']
-    mocker.patch(f'{_MODULE}.determine_seat_row_or_col', side_effect=side_effects)
+    mocker.patch(
+        f'{_MODULE}.determine_seat_row_or_col', side_effect=side_effects)
 
     # Act
     actual = day5.calculate_seat_id(boarding_passes)

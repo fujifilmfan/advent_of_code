@@ -29,9 +29,11 @@ def return_parsed_args(args):
 
 
 def lines_from_file(path):
+    file_contents = []
     with open(path) as handle:
         for line in handle:
-            yield line.rstrip('\n')
+            file_contents.append(int(line.rstrip('\n')))
+    return file_contents
 
 
 def main(args):

@@ -4,6 +4,7 @@ Part 1
 How many bag colors can eventually contain at least one shiny gold bag?
 
 Part 2
+How many individual bags are required inside your single shiny gold bag?
 
 """
 
@@ -20,7 +21,7 @@ def return_parsed_args(args):
     """
 
     parser = argparse.ArgumentParser(
-        description='Valid password count')
+        description='Bag counting options')
     parser.add_argument('filename', type=str, help="""
                         Required. Enter the path to the input file that 
                         you would like to analyze. The file should be a
@@ -35,6 +36,7 @@ def lines_from_file(path):
     :param path: STR; path to input file
     :return: OBJ; generator
     """
+
     with open(path) as handle:
         for line in handle:
             yield line.rstrip('\n')
@@ -77,7 +79,6 @@ def rule_parser(lines):
     :return: OBJ; generator object yielding dict of rule
     """
 
-    # rule = {}
     for line in lines:
         rule = {}
         bag, contents = re.split(' bags contain ', line)
@@ -135,6 +136,14 @@ def contained_bags(bag_map, bag_color, num_bags):
     # return total
 # 2+(2*(2+(2*(2+(2*(2+(2*(2+(2*2))))
 
+def add_bags(func):
+    def wrapper(*args):
+        attr, bags = func(*args)
+        for bag in bags:
+            if bag not in attr:
+                attr.append(bag)
+    return wrapper
+
 
 class Bag:
 
@@ -142,14 +151,6 @@ class Bag:
         self.bag = bag
         self.outside_bags = []
         self.inside_bags = []
-
-    def add_bags(func):
-        def wrapper(*args):
-            attr, bags = func(*args)
-            for bag in bags:
-                if bag not in attr:
-                    attr.append(bag)
-        return wrapper
 
     @add_bags
     def add_inside_bags(self, bags):

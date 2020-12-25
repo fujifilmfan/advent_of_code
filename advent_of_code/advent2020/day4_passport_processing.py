@@ -19,7 +19,7 @@ def return_parsed_args(args):
     """
 
     parser = argparse.ArgumentParser(
-        description='Valid password count')
+        description='Passport processing options')
     parser.add_argument('filename', type=str, help="""
                         Required. Enter the path to the input file that 
                         you would like to analyze. The file should be a

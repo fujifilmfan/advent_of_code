@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 """
+Part 1
 As a sanity check, look through your list of boarding passes. What is
 the highest seat ID on a boarding pass?
 
+Part 2
 What is the ID of your seat?
 """
 

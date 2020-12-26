@@ -5,7 +5,7 @@ Immediately before any instruction is executed a second time, what
 value is in the accumulator?
 
 Part 2
-
+What is the value of the accumulator after the program terminates?
 """
 
 import argparse

@@ -1,4 +1,4 @@
-input_d1 = [
+day1_input = [
     "8eight1",
     "98126",
     "fourfourthreehnbhkmscqxdfksg64bvpppznkh",
@@ -1001,10 +1001,20 @@ input_d1 = [
     "8four419eighteight1bpv",
 ]
 
+day1_input_sample = [
+    "two1nine",
+    "eightwothree",
+    "abcone2threexyz",
+    "xtwone3four",
+    "4nineeightseven2",
+    "zoneight234",
+    "7pqrstsixteen",
+]
+
 # Part One
 nums = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 running_total = 0
-for line in input_d1:
+for line in day1_input:
     first_num = None
     last_num = None
     for char in line:
@@ -1042,17 +1052,8 @@ words_dict = {
     "8": 8,
     "9": 9,
 }
-input_sample = [
-    "two1nine",
-    "eightwothree",
-    "abcone2threexyz",
-    "xtwone3four",
-    "4nineeightseven2",
-    "zoneight234",
-    "7pqrstsixteen",
-]
 running_total = 0
-for line in input_d1:
+for line in day1_input:
     first_num = None
     first_val = None
     last_num = None

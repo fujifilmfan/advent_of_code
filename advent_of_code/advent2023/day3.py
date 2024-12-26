@@ -313,4 +313,4 @@ def find_gears(schematic):
 # print(all_asterisks)
 # print(all_asterisks)
 # find_gears(day3_input_sample)  # 467835
-find_gears(day3_input)  # 63601359 75686281 (wrong) 84495585
+find_gears(day3_input)  # 63601359 75686281 <- wrong | right -> 84495585

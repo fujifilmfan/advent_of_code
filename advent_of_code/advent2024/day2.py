@@ -1,9 +1,5 @@
-from itertools import count
-
-
 reports = []
-
-with open("2024_day2_input.txt") as f:
+with open("day2_input.txt") as f:
     for line in f:
         line.rstrip("\n")
         report = [int(x) for x in line.split(" ")]

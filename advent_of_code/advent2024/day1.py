@@ -1,5 +1,5 @@
 l1, l2 = [], []
-with open("2024_day1_input.txt") as f:
+with open("day1_input.txt") as f:
     for line in f:
         line.rstrip("\n")
         id1, id2 = line.split("   ")
